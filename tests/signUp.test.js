@@ -82,14 +82,18 @@ describe('POST /sign-up', () => {
 
   test('Existing email in database', async () => {
     const result = await postTestUserToSignUpRoute({
-      ...fakeUser,
+      name: 'Manoel Coelho Ribeiro Jr',
       email: 'manoel.ribeiro@test.com',
+      password: '@Testando123',
     });
     expect(result.status).toEqual(404);
   });
 
   test('Successuful sign up', async () => {
-    const result = await postTestUserToSignUpRoute(fakeUser);
+    const result = await postTestUserToSignUpRoute({
+      ...fakeUser,
+      password: '@Testando123',
+    });
     expect(result.status).toEqual(201);
   });
 });
