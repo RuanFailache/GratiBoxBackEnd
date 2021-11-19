@@ -14,7 +14,7 @@ describe('POST /sign-up', () => {
     password: '',
   };
 
-  const fakeUser = createFakerUserToSignUp();
+  const fakeUser = createFakerUserToSignUp;
 
   beforeAll(async () => {
     await connection.query('DELETE FROM users;');
