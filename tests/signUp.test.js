@@ -17,6 +17,7 @@ describe('POST /sign-up', () => {
   const fakeUser = createFakerUserToSignUp;
 
   beforeAll(async () => {
+    await connection.query('DELETE FROM sessions;');
     await connection.query('DELETE FROM users;');
     await connection.query(`
       INSERT INTO users (

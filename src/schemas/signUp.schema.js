@@ -5,6 +5,7 @@ const validateNewUserData = joi.object({
   name: joi.string().min(3).pattern(/^[a-zA-z ]+$/).required(),
   email: joi.string().email().required(),
   password: joiPassword.string()
+    .min(6)
     .minOfLowercase(1)
     .minOfUppercase(1)
     .minOfSpecialCharacters(1)
