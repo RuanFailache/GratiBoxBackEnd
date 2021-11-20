@@ -1,17 +1,18 @@
 import joi from 'joi';
-import joiPassword from 'joi-password';
+import passwordComplexity from 'joi-password-complexity';
 
 const validateNewUserData = joi.object({
   name: joi.string().min(3).pattern(/^[a-zA-z ]+$/).required(),
   email: joi.string().email().required(),
-  password: joiPassword.string()
-    .min(6)
-    .minOfLowercase(1)
-    .minOfUppercase(1)
-    .minOfSpecialCharacters(1)
-    .minOfNumeric(1)
-    .noWhiteSpaces()
-    .required(),
+  password: passwordComplexity({
+    min: 6,
+    max: 32,
+    lowerCase: 1,
+    upperCase: 1,
+    numeric: 1,
+    symbol: 1,
+    requirementCount: 6,
+  }),
 });
 
 export default validateNewUserData;
