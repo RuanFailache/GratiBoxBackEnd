@@ -55,8 +55,8 @@ const checkSignInAndSendToken = async (req, res) => {
       user: {
         idUser: result.rows[0].id,
         name: result.rows[0].name,
-        idPlan: result.rows[0].id_address,
-        idAddress: result.rows[0].id_plan,
+        idAddress: result.rows[0].id_address,
+        idPlan: result.rows[0].id_plan,
       },
     });
   } catch {
