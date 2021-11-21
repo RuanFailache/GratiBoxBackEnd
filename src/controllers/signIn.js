@@ -53,6 +53,7 @@ const checkSignInAndSendToken = async (req, res) => {
     return res.send({
       token,
       user: {
+        idUser: result.rows[0].id,
         name: result.rows[0].name,
         idPlan: result.rows[0].id_address,
         idAddress: result.rows[0].id_plan,
