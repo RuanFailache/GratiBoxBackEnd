@@ -27,7 +27,6 @@ const registerNewPlan = async (req, res) => {
       return res.sendStatus(401);
     }
 
-    console.log({ plan, userInfo });
     const idUser = result.rows[0].id_user;
 
     const addressResult = await connection.query(`
