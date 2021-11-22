@@ -10,10 +10,10 @@ export const newUserRegisterToTest = () => connection.query(`
       email,
       password
     ) VALUES (
-      'Bernardo Campos Filho',
+      'Bernardo',
       'bernardo.filho@test.com',
       $1
-    );
+    ) RETURNING *;
   `, [bcrypt.hashSync('@Testando123', 12)]);
 
 export const postTestUserToSignInRoute = (body) => (
