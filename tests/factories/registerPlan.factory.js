@@ -1,5 +1,5 @@
 import supertest from 'supertest';
-import dayjs from 'dayjs';
+import { v4 as uuid } from 'uuid';
 
 import app from '../../src/app.js';
 import connection from '../../src/database/database.js';
@@ -9,7 +9,16 @@ import { newUserRegisterToTest } from './signIn.factyory.js';
 export const registerNewPlan = async () => {
   const user = await newUserRegisterToTest();
 
-  const plan = await connection.query(`
+  await connection.query(`
+    INSERT INTO sessions (
+      id_user,
+      token
+    ) VALUES (
+      $1, $2
+    );
+  `, [user.rows[0].id, uuid()]);
+
+  await connection.query(`
     INSERT INTO plans (
       type,
       signature_date,
@@ -19,19 +28,7 @@ export const registerNewPlan = async () => {
       CURRENT_DATE,
       $2
     ) RETURNING *;
-  `, ['mensal', dayjs().add(7, 'day')]);
-
-  await connection.query(
-    'UPDATE users SET id_plan = $1, fullname = $2 WHERE id = $3;',
-    [plan.rows[0].id, 'Bernardo Campos Filho', user.rows[0].id],
-  );
-
-  await connection.query(`
-    INSERT INTO plan_products (
-      id_plan,
-      id_product
-    ) VALUES ($1, 2), ($1, 3);
-  `, [plan.rows[0].id]);
+  `, ['mensal', new Date()]);
 
   await connection.query(`
     INSERT INTO address (
@@ -48,13 +45,15 @@ export const registerNewPlan = async () => {
       'PA'
     );
   `);
+
+  return user.rows[0].id;
 };
 
-export const getUserTestToken = async () => (
-  (await connection.query(
-    'SELECT token FROM sessions WHERE email = $1;',
-    ['bernardo.filho@test.com'],
-  )).rows[0]
+export const getUserTestToken = async (idUser) => (
+  connection.query(
+    'SELECT * FROM sessions WHERE id_user = $1;',
+    [idUser],
+  )
 );
 
 export const postTestPlanToPlanRoute = (body, config) => (

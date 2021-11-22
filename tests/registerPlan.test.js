@@ -30,7 +30,7 @@ describe('POST /plan', () => {
   const validBody = {
     plan: {
       type: 'semanal',
-      receive: 'quarta',
+      receive: 'Segunda',
       itensDelivery: ['Chá'],
     },
     userInfo: {
@@ -45,11 +45,7 @@ describe('POST /plan', () => {
     },
   };
 
-  const config = {
-    headers: {
-      authorization: `Bearer ${getUserTestToken}`,
-    },
-  };
+  let idUser;
 
   beforeAll(async () => {
     await connection.query('DELETE FROM plan_products;');
@@ -57,7 +53,7 @@ describe('POST /plan', () => {
     await connection.query('DELETE FROM users;');
     await connection.query('DELETE FROM plans;');
     await connection.query('DELETE FROM address;');
-    await registerNewPlan();
+    idUser = await registerNewPlan();
   });
 
   afterAll(() => {
@@ -65,12 +61,12 @@ describe('POST /plan', () => {
   });
 
   test('Empty receive delivery pattern', async () => {
-    const result = await postTestPlanToPlanRoute(emptyBody, config);
+    const result = await postTestPlanToPlanRoute(emptyBody);
     expect(result.status).toEqual(400);
   });
 
   test('Empty receive delivery list item', async () => {
-    const result = await postTestPlanToPlanRoute(emptyBody, config);
+    const result = await postTestPlanToPlanRoute(emptyBody);
     expect(result.status).toEqual(400);
   });
 
@@ -82,7 +78,7 @@ describe('POST /plan', () => {
         itensDelivery: [],
       },
       userInfo,
-    }, config);
+    });
     expect(result.status).toEqual(400);
   });
 
@@ -94,7 +90,7 @@ describe('POST /plan', () => {
         itensDelivery: ['Abacate'],
       },
       userInfo,
-    }, config);
+    });
     expect(result.status).toEqual(400);
   });
 
@@ -110,7 +106,7 @@ describe('POST /plan', () => {
           number: 'olá',
         },
       },
-    }, config);
+    });
     expect(result.status).toEqual(400);
   });
 
@@ -120,7 +116,10 @@ describe('POST /plan', () => {
   });
 
   test('Successuful register of new plan', async () => {
-    const result = await postTestPlanToPlanRoute(validBody, config);
+    const tokenResult = await getUserTestToken(idUser);
+    const { token } = tokenResult.rows[0];
+    const result = await postTestPlanToPlanRoute(validBody)
+      .set('authorization', `Bearer ${token}`);
     expect(result.status).toEqual(201);
   });
 });
