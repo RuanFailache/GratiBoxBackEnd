@@ -4,7 +4,7 @@ const { Pool } = pg;
 
 let databaseConfig;
 
-if (process.env.NODE_ENV === 'production') {
+if (!(process.env.NODE_ENV === 'test')) {
   databaseConfig = {
     connectionString: process.env.DATABASE_URL,
     ssl: {
