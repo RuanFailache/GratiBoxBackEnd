@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 
 import * as userController from './controllers/userController.js';
-import registerNewPlan from './controllers/registerPlan.js';
+import * as planActionsController from './controllers/planActionsController.js';
 
 const app = express();
 
@@ -11,6 +11,6 @@ app.use(express.json());
 
 app.post('/sign-up', userController.signUp);
 app.post('/sign-in', userController.signIn);
-app.post('/plan', registerNewPlan);
+app.post('/plan', planActionsController.registerNewPlan);
 
 export default app;

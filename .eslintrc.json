@@ -18,6 +18,10 @@
             {
                 "ignorePackages": true
             }
+        ],
+        "import/prefer-default-export": [
+            "error",
+            "never"
         ]
     }
 }
