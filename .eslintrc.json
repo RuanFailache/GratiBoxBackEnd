@@ -19,9 +19,6 @@
                 "ignorePackages": true
             }
         ],
-        "import/prefer-default-export": [
-            "error",
-            "never"
-        ]
+        "import/prefer-default-export": "off"
     }
 }

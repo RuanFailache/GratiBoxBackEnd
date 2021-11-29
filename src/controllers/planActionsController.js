@@ -2,7 +2,7 @@ import * as planSchema from '../schemas/planSchema.js';
 import * as planActionsRepository from '../repositories/planActionsRepository.js';
 
 export const registerNewPlan = async (req, res) => {
-  const { token } = req.locals;
+  const { token } = await res.locals;
 
   if (!token) {
     return res.sendStatus(401);
